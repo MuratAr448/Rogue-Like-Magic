@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 
     TurnSystem turnSystem;
 
+
     public TMP_Text health;
     public float healthMax;
     public float healthPoints;
@@ -74,15 +75,14 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = Color.green;
         healthPoints -= damageTaken;
-
         float damagetextY = 2;
-        new Vector2(transform.position.x, transform.position.y + damagetextY);
-        Destroy(Instantiate(damageText,new Vector3(transform.position.x, transform.position.y + damagetextY, transform.position.z),Quaternion.identity, textTransform),1);
-        takedamageText = damageText.GetComponent<Text>();
+        GameObject temp = Instantiate(damageText,new Vector3(transform.position.x, transform.position.y + damagetextY, transform.position.z),Quaternion.identity, textTransform);
+        takedamageText = temp.GetComponentInChildren<Text>();
         takedamageText.text = "-" + damageTaken;
         yield return new WaitForSeconds(0.3f);
         spriteRenderer.color = Color.white;
         yield return new WaitForSeconds(delay);
+        Destroy(temp);
         if (healthPoints <= 0)
         {
             //dead

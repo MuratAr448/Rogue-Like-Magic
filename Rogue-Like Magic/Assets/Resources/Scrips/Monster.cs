@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour
 {
     TurnSystem turnSystem;
+    Player player;
     public int moves;
     public bool secondMoveActive = false;
 
@@ -22,9 +23,11 @@ public class Monster : MonoBehaviour
 
     private float delay;
     SpriteRenderer SpriteRenderer;
+    public int dropCoins;
     void Start()
     {
         turnSystem = FindObjectOfType<TurnSystem>();
+        player = FindObjectOfType<Player>();
         turnSystem.enemyList.Add(this);
         transitionSpeed = healthMax;
         healthPoints = healthMax;
@@ -72,6 +75,7 @@ public class Monster : MonoBehaviour
 
         if (healthPoints<=0)
         {
+            player.coins += dropCoins;
             turnSystem.enemyList.Remove(this);
         }
     }
