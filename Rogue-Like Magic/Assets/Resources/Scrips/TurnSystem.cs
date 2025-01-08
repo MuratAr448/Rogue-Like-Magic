@@ -1,7 +1,9 @@
+using Assets.Scripts.Common;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnSystem : MonoBehaviour
 {
@@ -12,11 +14,26 @@ public class TurnSystem : MonoBehaviour
     private int enemys = 0;
 
     private float delay = 1.0f;
+    TargetMonster targetMonster;
+    public GameObject actionMenu;
+    public GameObject useButton;
+    Button endTurnButton;
+    Image endTurnImage;
+    Text endTurnText;
 
+
+    private void Start()
+    {
+        turns = 0;
+        targetMonster = FindObjectOfType<TargetMonster>();
+        endTurnButton = GetComponent<Button>();
+        endTurnImage = GetComponent<Image>();
+        endTurnText = GetComponentInChildren<Text>();
+        SwapTurn();
+        
+    }
     public void SwapTurn()
     {
-        playersTurn = !playersTurn;
-        
         if (playersTurn)
         {
             player = FindObjectOfType<Player>();
@@ -24,25 +41,28 @@ public class TurnSystem : MonoBehaviour
             turns++;
             Debug.Log(turns);
             //Avaleble spells
+            playersTurn = false;
+            StartCoroutine(TurnOn());
         }
         else
         if (!playersTurn)
         {
+            targetMonster.monster=null;
+            targetMonster.target.SetActive(false);
+            actionMenu.SetActive(false);
+            useButton.SetActive(false);
+            endTurnButton.enabled = false;
+            endTurnImage.enabled = false;
+            endTurnText.enabled = false;
             enemys = 0;
             StartCoroutine(EnemyAttacks());
+            playersTurn=true;
         }
-
     }
     private IEnumerator EnemyAttacks()
     {
-        if (enemys > enemyList.Count)
-        {
-            SwapTurn();
-            StopCoroutine(EnemyAttacks());
-        }   
         player = FindObjectOfType<Player>();
         yield return new WaitForSeconds(delay);
-        /*        
         enemyList[enemys].moves = UnityEngine.Random.Range(0, 2);
         if (enemyList[enemys].moves==1)
         {
@@ -52,19 +72,32 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
-                player.hurt(enemyList[enemys].Attack());
+                StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
             }
         } 
         else
         {
-            
+            StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
         }
-         */
-        StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
+        
         enemys++;
         if (enemys < enemyList.Count)
         {
             StartCoroutine(EnemyAttacks());
+        }else
+        if (enemys >= enemyList.Count)
+        {
+            SwapTurn();
         }
+    }
+    private IEnumerator TurnOn()
+    {
+        yield return new WaitForSeconds(delay);
+        targetMonster.target.SetActive(true);
+        actionMenu.SetActive(true);
+        useButton.SetActive(true);
+        endTurnButton.enabled = true;
+        endTurnImage.enabled = true;
+        endTurnText.enabled = true;
     }
 }

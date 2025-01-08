@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class OffenseSpell : Spells
 {
-    public int damage;
-    void Start()
+    public enum Element
     {
-        
+        none,
+        fire,
+        water,
+        grass,
+        light
     }
+    public Element elements;
+    public int damage;
 
-    void Update()
+    public IEnumerable Attack()
     {
-        
+        yield return new WaitForSeconds(0.1f);
     }
 }

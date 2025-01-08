@@ -5,7 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class DragAble : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public bool Spell;
+    public enum Drag
+    {
+        Spell,
+        Item
+    }
+    public Drag DragState;
     public Image image;
     [HideInInspector] public Transform parentAfterDrag;
     public void OnBeginDrag(PointerEventData eventData)

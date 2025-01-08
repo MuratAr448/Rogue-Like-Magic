@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
 
     TurnSystem turnSystem;
 
-
     public TMP_Text health;
     public float healthMax;
     public float healthPoints;

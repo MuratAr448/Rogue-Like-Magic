@@ -5,14 +5,16 @@ using UnityEngine.XR;
 
 public class Spells : MonoBehaviour
 {
-    public enum status
+    public enum Status
     {
         offense,
         defense,
         other
     }
-    public status state;
+    public Status state;
     public string spellName;
     public int manaCost;
     public string spellDiscription;
+    public int cooldownTimer;
+    public int cooldownTime;
 }

@@ -11,7 +11,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             GameObject dropped = eventData.pointerDrag;
             DragAble dragAble = dropped.GetComponent<DragAble>();
-            if (!dragAble.Spell)
+            if (dragAble.DragState == DragAble.Drag.Item)
             {
                 dragAble.parentAfterDrag = transform;
             }

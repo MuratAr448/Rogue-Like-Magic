@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DefenseSpell : MonoBehaviour
 {
-    public int shilding;
+    public int shielding;
     public string smallDiscription;
     void Start()
     {

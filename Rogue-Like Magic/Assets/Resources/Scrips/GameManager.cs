@@ -8,8 +8,7 @@ public class GameManager : MonoBehaviour
 {
     Player player;
 
-    public TMP_Text coins;
-    public Image Image;
+    public Text coins;
     public float coinsCount;
     private float coinsDisplay;
     private float transitionSpeed = 10;
@@ -26,6 +25,6 @@ public class GameManager : MonoBehaviour
         coinsCount = player.coins;
         coinsDisplay = Mathf.MoveTowards(coinsDisplay, coinsCount, transitionSpeed * Time.deltaTime);
         int displayC = Mathf.RoundToInt(coinsDisplay);
-        coins.text = "Coin amount:" + Image + displayC;
+        coins.text = "Coin amount: "+ displayC;
     }
 }

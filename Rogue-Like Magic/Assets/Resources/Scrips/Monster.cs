@@ -6,10 +6,19 @@ using UnityEngine.UI;
 
 public class Monster : MonoBehaviour
 {
+    public List<bool> elementW;
+
+    CastSlot castSlot;
     TurnSystem turnSystem;
     Player player;
+
+    public GameObject damageText;
+    private Text takedamageText;
+    [SerializeField] private UnityEngine.Transform textTransform;
+
     public int moves;
     public bool secondMoveActive = false;
+    public int secondMoveCooldown = 0;
 
     public TMP_Text health;
     public float healthMax;
@@ -17,21 +26,40 @@ public class Monster : MonoBehaviour
     private float healthDisplay;
     private float transitionSpeed = 10;
 
-    private float defense;
+    public float defense;
     public int attackD;
     private int critChance = 15;
 
-    private float delay;
+    TargetMonster TargetMonster;
+
+    private float delay = 1.5f;
     SpriteRenderer SpriteRenderer;
     public int dropCoins;
     void Start()
     {
+        textTransform = GetComponentInChildren<RectTransform>();
+        TargetMonster = FindObjectOfType<TargetMonster>();
         turnSystem = FindObjectOfType<TurnSystem>();
+        castSlot = FindObjectOfType<CastSlot>();
         player = FindObjectOfType<Player>();
         turnSystem.enemyList.Add(this);
         transitionSpeed = healthMax;
         healthPoints = healthMax;
+        SpriteRenderer = GetComponent<SpriteRenderer>();
     }
+    public void OnMouseOver()
+    {
+        if(castSlot.spellSlot.transform.childCount != 0)
+        {
+            if (Input.GetMouseButtonDown(0) && castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>())
+            {
+                TargetMonster.monster = this;
+                Debug.Log("good");
+            }
+        }
+    }
+
+
 
     void Update()
     {
@@ -48,6 +76,10 @@ public class Monster : MonoBehaviour
     public int Attack()
     {
         StartCoroutine(AttackTime());
+        if (secondMoveCooldown<=turnSystem.turns)
+        {
+            secondMoveActive = false;
+        }
         int dealdamage = attackD;
         int crit = Random.Range(0, 16);
         if (crit >= critChance)
@@ -60,34 +92,77 @@ public class Monster : MonoBehaviour
     public void SecondMove()
     {
         secondMoveActive = true;
+        secondMoveCooldown = 3 + turnSystem.turns;
         Debug.Log(secondMoveActive);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int takendamage)
     {
-        StartCoroutine(DamageCount());
+        int damage;
+        if (WeaknessCheck()) 
+        {
+            damage = Mathf.RoundToInt(takendamage * 1.5f);
+        }
+        else
+        {
+            damage = takendamage;
+        }
+        Debug.Log("My damage:"+ damage);
+        StartCoroutine(DamageCount(damage));
     }
-    private IEnumerator DamageCount()
+    private bool WeaknessCheck()
     {
-        yield return new WaitForSeconds(delay);
+
+        int check = (int)castSlot.OffenseSpell.elements;
+        if (elementW[check] == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
         
+    }
+    private IEnumerator DamageCount(int takendamage)
+    {
+        healthPoints -= takendamage;
+        if (healthPoints < 0)
+        {
+            healthPoints = 0;
+        }
+        float damagetextY = 1;
+        GameObject temp = Instantiate(damageText, new Vector3(transform.position.x, transform.position.y + damagetextY, transform.position.z), Quaternion.identity, textTransform);
+        takedamageText = temp.GetComponentInChildren<Text>();
+        takedamageText.text = "-" + takendamage;
+        
+        SpriteRenderer.color = Color.red;
+
         yield return new WaitForSeconds(delay);
 
-        if (healthPoints<=0)
+        Destroy(temp);
+        SpriteRenderer.color = Color.white;
+
+        yield return new WaitForSeconds(delay);
+        
+        if (healthPoints <= 0)
         {
             player.coins += dropCoins;
             turnSystem.enemyList.Remove(this);
+            yield return new WaitForSeconds(delay);
+            Destroy(gameObject);
         }
     }
     private IEnumerator AttackTime()
     {
-        SpriteRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer.color = Color.red;
+        SpriteRenderer.color = Color.green;
         for (int i = 0; i < 5; i++)
         {
             transform.position = new Vector2(transform.position.x - Time.deltaTime, transform.position.y);
         }
+
         yield return new WaitForSeconds(0.3f);
+
         for (int i = 0; i < 5; i++)
         {
             transform.position = new Vector2(transform.position.x + Time.deltaTime, transform.position.y);
