@@ -72,12 +72,35 @@ public class CastSlot : MonoBehaviour
         {
             if (Manacheck())
             {
-                if (Spells.state == Spells.Status.offense)
+                if (Spells.state == Spells.Status.offense&& targetMonster.target!=null)
                 {
+                    int spellSlotChekker = 1;
+                    for(int i = 0; i < spellSlotChekker; i++)
+                    {
+                        GameObject temp = spellGrid.transform.GetChild(i).gameObject;
+                        Debug.Log(i);
+                        if (temp.transform.childCount == 0)
+                        {
+                            Spells.gameObject.transform.SetParent(temp.transform);
+                        }
+                        else
+                        {
+                            if (spellSlotChekker > 6)
+                            {
+                                Debug.Log("error");
+                            }
+                            else
+                            {
+                                spellSlotChekker++;
+                            }
+                           
+                        }
+                    }
                     player.manaPoints -= Spells.manaCost;
                     
                     Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
-                    targetMonster.monster.TakeDamage(OffenseSpell.damage);
+                    targetMonster.target.GetComponent<Monster>().TakeDamage(OffenseSpell.damage);
+                    targetMonster.target = null;
 
                 }
                 else if (Spells.state == Spells.Status.defense)

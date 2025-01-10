@@ -160,7 +160,7 @@ namespace Assets.Scripts.Examples.Interface
         }
         
         /// <summary>
-        /// Automatically removes items if target slot is busy.
+        /// Automatically removes items if targetImage slot is busy.
         /// </summary>
         private void AutoRemove(ItemType itemType)
         {

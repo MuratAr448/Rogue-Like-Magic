@@ -47,8 +47,7 @@ public class TurnSystem : MonoBehaviour
         else
         if (!playersTurn)
         {
-            targetMonster.monster=null;
-            targetMonster.target.SetActive(false);
+            targetMonster.target =null;
             actionMenu.SetActive(false);
             useButton.SetActive(false);
             endTurnButton.enabled = false;
@@ -93,7 +92,6 @@ public class TurnSystem : MonoBehaviour
     private IEnumerator TurnOn()
     {
         yield return new WaitForSeconds(delay);
-        targetMonster.target.SetActive(true);
         actionMenu.SetActive(true);
         useButton.SetActive(true);
         endTurnButton.enabled = true;

@@ -53,7 +53,8 @@ public class Monster : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>())
             {
-                TargetMonster.monster = this;
+                TargetMonster.target = gameObject;
+                TargetMonster.SetTarget();
                 Debug.Log("good");
             }
         }
