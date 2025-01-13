@@ -38,13 +38,6 @@ public class Player : MonoBehaviour
         transitionSpeed = healthMax;
         healthPoints = healthMax;
     }
-    /*health = GetComponent<Slider>();
-        mana = GetComponent<Slider>();
-
-        health.maxValue = healthMax;
-        mana.maxValue = manaMax;
-        mana.minValue = -5;
-     */
     private void Update()
     {
         Stats();
@@ -54,30 +47,30 @@ public class Player : MonoBehaviour
         if (healthPoints>=healthMax)
         {
             healthPoints = healthMax;
-        }
-
+        }//hp gaat niet boven max
         healthDisplay = Mathf.MoveTowards(healthDisplay, healthPoints, transitionSpeed * Time.deltaTime);
         int displayH = Mathf.RoundToInt(healthDisplay);
         health.text = displayH + "/" + healthMax;
-
+        //animated hp going up or down
         if (manaPoints>=manaMax)
         {
             manaPoints = manaMax;
-        }
+        }//mp gaat niet boven max
         manaDisplay = Mathf.MoveTowards(manaDisplay, manaPoints, transitionSpeed * Time.deltaTime);
         int displayM = Mathf.RoundToInt(manaDisplay);
         mana.text = displayM + "/" + manaMax;
-
+        //animated mp going up or down
     }
     public IEnumerator GetHurt(int damageTaken)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = Color.green;
-        healthPoints -= damageTaken;
-        float damagetextY = 2;
-        GameObject temp = Instantiate(damageText,new Vector3(transform.position.x, transform.position.y + damagetextY, transform.position.z),Quaternion.identity, textTransform);
+        healthPoints -= damageTaken; //take damage
+        
+        GameObject temp = Instantiate(damageText,new Vector3(transform.position.x, transform.position.y + 2, transform.position.z),Quaternion.identity, textTransform);
         takedamageText = temp.GetComponentInChildren<Text>();
-        takedamageText.text = "-" + damageTaken;
+        takedamageText.text = "-" + damageTaken;//show how much hp you lost
+
         yield return new WaitForSeconds(0.3f);
         spriteRenderer.color = Color.white;
         yield return new WaitForSeconds(delay);

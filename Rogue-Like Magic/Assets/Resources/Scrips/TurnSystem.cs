@@ -38,9 +38,8 @@ public class TurnSystem : MonoBehaviour
         {
             player = FindObjectOfType<Player>();
             player.manaPoints += player.manaMax;
-            turns++;
+            turns++;//turn count
             Debug.Log(turns);
-            //Avaleble spells
             playersTurn = false;
             StartCoroutine(TurnOn());
         }
@@ -62,7 +61,7 @@ public class TurnSystem : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         yield return new WaitForSeconds(delay);
-        enemyList[enemys].moves = UnityEngine.Random.Range(0, 2);
+        enemyList[enemys].moves = UnityEngine.Random.Range(0, 2);//the enemy has a chance to use the second move but if is not ready than normal attack
         if (enemyList[enemys].moves==1)
         {
             if (!enemyList[enemys].secondMoveActive)
@@ -82,7 +81,7 @@ public class TurnSystem : MonoBehaviour
         enemys++;
         if (enemys < enemyList.Count)
         {
-            StartCoroutine(EnemyAttacks());
+            StartCoroutine(EnemyAttacks());//every enemy attacks
         }else
         if (enemys >= enemyList.Count)
         {

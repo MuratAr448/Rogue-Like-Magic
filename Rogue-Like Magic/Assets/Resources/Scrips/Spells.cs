@@ -32,7 +32,7 @@ public class Spells : MonoBehaviour
     {
         if (cooldownTimer > TurnSystem.turns)
         {
-            countdownTimer.SetActive(true);
+            countdownTimer.SetActive(true);//shows cooldownTimer
             countdownText.text = "" + (cooldownTimer - TurnSystem.turns);
         }
         else

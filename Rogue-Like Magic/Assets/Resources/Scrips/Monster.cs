@@ -14,6 +14,7 @@ public class Monster : MonoBehaviour
 
     public GameObject damageText;
     private Text takedamageText;
+    private float damagetextY = 1;
     [SerializeField] private UnityEngine.Transform textTransform;
 
     public int moves;
@@ -54,13 +55,11 @@ public class Monster : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>())
             {
                 TargetMonster.target = gameObject;
-                TargetMonster.SetTarget();
+                TargetMonster.SetTarget();//able to be targeted
                 Debug.Log("good");
             }
         }
     }
-
-
 
     void Update()
     {
@@ -69,9 +68,14 @@ public class Monster : MonoBehaviour
 
     private void Stats()
     {
+        if (healthPoints >= healthMax)
+        {
+            healthPoints = healthMax;
+        }//hp gaat niet boven max 
         healthDisplay = Mathf.MoveTowards(healthDisplay, healthPoints, transitionSpeed * Time.deltaTime);
         int displayH = Mathf.RoundToInt(healthDisplay);
         health.text = displayH + "/" + healthMax;
+        //animated hp going up or down
     }
 
     public int Attack()
@@ -86,14 +90,14 @@ public class Monster : MonoBehaviour
         if (crit >= critChance)
         {
             dealdamage = Mathf.RoundToInt(dealdamage * 1.5f);
-            Debug.Log(dealdamage);
+            Debug.Log(dealdamage);//chance to crit
         }
-        return dealdamage;
+        return dealdamage;//deel damage
     }
     public void SecondMove()
     {
         secondMoveActive = true;
-        secondMoveCooldown = 3 + turnSystem.turns;
+        secondMoveCooldown = 3 + turnSystem.turns;//second move cooldown
         Debug.Log(secondMoveActive);
     }
 
@@ -102,7 +106,7 @@ public class Monster : MonoBehaviour
         int damage;
         if (WeaknessCheck()) 
         {
-            damage = Mathf.RoundToInt(takendamage * 1.5f);
+            damage = Mathf.RoundToInt(takendamage * 1.5f);//do more damage if super effectif
         }
         else
         {
@@ -132,11 +136,11 @@ public class Monster : MonoBehaviour
         {
             healthPoints = 0;
         }
-        float damagetextY = 1;
+        
         GameObject temp = Instantiate(damageText, new Vector3(transform.position.x, transform.position.y + damagetextY, transform.position.z), Quaternion.identity, textTransform);
         takedamageText = temp.GetComponentInChildren<Text>();
-        takedamageText.text = "-" + takendamage;
-        
+        takedamageText.text = "-" + takendamage;//show how much hp it lost
+
         SpriteRenderer.color = Color.red;
 
         yield return new WaitForSeconds(delay);
@@ -148,8 +152,8 @@ public class Monster : MonoBehaviour
         
         if (healthPoints <= 0)
         {
-            player.coins += dropCoins;
-            turnSystem.enemyList.Remove(this);
+            player.coins += dropCoins;//loot
+            turnSystem.enemyList.Remove(this);//dead
             yield return new WaitForSeconds(delay);
             Destroy(gameObject);
         }

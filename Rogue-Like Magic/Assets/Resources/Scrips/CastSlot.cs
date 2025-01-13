@@ -31,11 +31,11 @@ public class CastSlot : MonoBehaviour
         else
         {
             if (!spellSlot.transform.GetChild(0).GetComponent<Spells>() == true)
-            {
+            {//if items are in the cast slot
                 
             }
             else
-            {
+            {//get info of the spell in the cast slot
                 Spells = spellSlot.transform.GetChild(0).GetComponent<Spells>();
                 spellNameText.text = Spells.name;
                 spellDiscriptionText.text = Spells.spellDiscription;
@@ -77,29 +77,20 @@ public class CastSlot : MonoBehaviour
                     int spellSlotChekker = 1;
                     for(int i = 0; i < spellSlotChekker; i++)
                     {
-                        GameObject temp = spellGrid.transform.GetChild(i).gameObject;
-                        Debug.Log(i);
+                        GameObject temp = spellGrid.transform.GetChild(i).gameObject;//after the spell is used the spell go's back in the spell grid in the first slot posible
                         if (temp.transform.childCount == 0)
                         {
                             Spells.gameObject.transform.SetParent(temp.transform);
                         }
                         else
                         {
-                            if (spellSlotChekker > 6)
-                            {
-                                Debug.Log("error");
-                            }
-                            else
-                            {
-                                spellSlotChekker++;
-                            }
-                           
+                            spellSlotChekker++;
                         }
                     }
                     player.manaPoints -= Spells.manaCost;
                     
                     Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
-                    targetMonster.target.GetComponent<Monster>().TakeDamage(OffenseSpell.damage);
+                    targetMonster.target.GetComponent<Monster>().TakeDamage(OffenseSpell.damage);//do damage with spell
                     targetMonster.target = null;
 
                 }
@@ -118,7 +109,7 @@ public class CastSlot : MonoBehaviour
     private bool Manacheck()
     {
         int tempMana = Mathf.RoundToInt(player.manaPoints);
-        if (tempMana - Spells.manaCost < 0 || Spells.cooldownTimer > TurnSystem.turns) 
+        if (tempMana - Spells.manaCost < 0 || Spells.cooldownTimer > TurnSystem.turns) //checks if it is posible to use the spell
         {
             return false;
         }
