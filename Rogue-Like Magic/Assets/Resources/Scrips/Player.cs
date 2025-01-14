@@ -13,18 +13,17 @@ public class Player : MonoBehaviour
 
     TurnSystem turnSystem;
 
-    public TMP_Text health;
+    [SerializeField] private TMP_Text health;
     public float healthMax;
     public float healthPoints;
     private float healthDisplay;
 
-    public TMP_Text mana;
+    [SerializeField] private TMP_Text mana;
     public float manaMax;
     public float manaPoints;
     private float manaDisplay;
 
     public float coins;
-    public List<GameObject> items;
     private float transitionSpeed = 10;
     private float delay = 1.0f;
 

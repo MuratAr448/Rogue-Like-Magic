@@ -32,7 +32,30 @@ public class CastSlot : MonoBehaviour
         {
             if (!spellSlot.transform.GetChild(0).GetComponent<Spells>() == true)
             {//if items are in the cast slot
-                
+                if (spellSlot.transform.GetChild(0).GetComponent<HealthP>() == true)
+                {
+                    HealthP healthP = spellSlot.transform.GetChild(0).GetComponent<HealthP>();
+                    spellNameText.text = healthP.name;
+                    spellDiscriptionText.text = healthP.itemDiscription;
+                    spellManaCostText.text = "---";
+                    spellDamageText.text = "---";
+                }
+                else if (spellSlot.transform.GetChild(0).GetComponent<ManaP>() == true)
+                {
+                    ManaP ManaP = spellSlot.transform.GetChild(0).GetComponent<ManaP>();
+                    spellNameText.text = ManaP.name;
+                    spellDiscriptionText.text = ManaP.itemDiscription;
+                    spellManaCostText.text = "---";
+                    spellDamageText.text = "---";
+                }
+                else if (spellSlot.transform.GetChild(0).GetComponent<Bomb>() == true)
+                {
+                    Bomb bomb = spellSlot.transform.GetChild(0).GetComponent<Bomb>();
+                    spellNameText.text = bomb.name;
+                    spellDiscriptionText.text = bomb.itemDiscription;
+                    spellManaCostText.text = "---";
+                    spellDamageText.text = "Damage: " + bomb.damageAmount;
+                }
             }
             else
             {//get info of the spell in the cast slot
@@ -67,7 +90,18 @@ public class CastSlot : MonoBehaviour
         player = FindObjectOfType<Player>();
         if (!spellSlot.transform.GetChild(0).GetComponent<Spells>() == true)
         {
+            if(spellSlot.transform.GetChild(0).GetComponent<HealthP>() == true)
+            {
+                HealthP healthP = spellSlot.transform.GetChild(0).GetComponent<HealthP>();
+                healthP.Use();
+            }
+            else if (spellSlot.transform.GetChild(0).GetComponent<ManaP>() == true)
+            {
 
+            }else if (spellSlot.transform.GetChild(0).GetComponent<Bomb>() == true)
+            {
+
+            }
         }else
         {
             if (Manacheck())

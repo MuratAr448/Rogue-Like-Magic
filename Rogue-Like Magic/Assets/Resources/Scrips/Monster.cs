@@ -21,7 +21,7 @@ public class Monster : MonoBehaviour
     public bool secondMoveActive = false;
     public int secondMoveCooldown = 0;
 
-    public TMP_Text health;
+    [SerializeField] private TMP_Text health;
     public float healthMax;
     public float healthPoints;
     private float healthDisplay;
@@ -117,17 +117,22 @@ public class Monster : MonoBehaviour
     }
     private bool WeaknessCheck()
     {
-
-        int check = (int)castSlot.OffenseSpell.elements;
-        if (elementW[check] == true)
+        if (castSlot.transform.GetChild(0).GetComponent<Spells>() == true)
         {
-            return true;
+            int check = (int)castSlot.OffenseSpell.elements;
+            if (elementW[check] == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
             return false;
         }
-        
     }
     private IEnumerator DamageCount(int takendamage)
     {
