@@ -14,9 +14,4 @@ public class OffenseSpell : Spells
     }
     public Element elements;
     public int damage;
-
-    public IEnumerable Attack()
-    {
-        yield return new WaitForSeconds(0.1f);
-    }
 }

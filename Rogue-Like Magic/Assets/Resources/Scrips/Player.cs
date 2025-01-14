@@ -31,6 +31,14 @@ public class Player : MonoBehaviour
     public GameObject damageText;
     private Text takedamageText;
     [SerializeField] private UnityEngine.Transform textTransform;
+
+    [SerializeField] private GameObject Shield;
+    [SerializeField] private TMP_Text shield;
+    public float ShieldhealthMax;
+    public float ShieldhealthPoints;
+    private float ShieldhealthDisplay;
+    public bool shieldOn = false;
+
     private void Start()
     {
         turnSystem = FindObjectOfType<TurnSystem>();
@@ -59,11 +67,25 @@ public class Player : MonoBehaviour
         int displayM = Mathf.RoundToInt(manaDisplay);
         mana.text = displayM + "/" + manaMax;
         //animated mp going up or down
+        if (shieldOn)
+        {
+            Shield.SetActive(true);
+
+            ShieldhealthDisplay = Mathf.MoveTowards(ShieldhealthDisplay, ShieldhealthPoints, transitionSpeed * Time.deltaTime);
+            int displayS = Mathf.RoundToInt(ShieldhealthDisplay);
+            shield.text = displayS + "/" + ShieldhealthMax;
+            //animated Shield going up or down
+        }
+        else
+        {
+            Shield.SetActive(false);
+        }
     }
     public IEnumerator GetHurt(int damageTaken)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = Color.green;
+
         healthPoints -= damageTaken; //take damage
         
         GameObject temp = Instantiate(damageText,new Vector3(transform.position.x, transform.position.y + 2, transform.position.z),Quaternion.identity, textTransform);

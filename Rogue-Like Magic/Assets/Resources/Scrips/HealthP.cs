@@ -8,7 +8,7 @@ public class HealthP : Item
     public void Use()
     {
         Player player = FindObjectOfType<Player>();
-        int addHealth = Mathf.RoundToInt(player.healthMax*0.4f);
+        int addHealth = Mathf.RoundToInt(player.healthMax*0.5f);
         player.healthPoints += addHealth;
         Destroy(gameObject);
     }

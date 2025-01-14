@@ -117,9 +117,11 @@ public class Monster : MonoBehaviour
     }
     private bool WeaknessCheck()
     {
-        if (castSlot.transform.GetChild(0).GetComponent<Spells>() == true)
+        Debug.Log(castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>());
+        if (castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>() == true)
         {
             int check = (int)castSlot.OffenseSpell.elements;
+            Debug.Log(check);
             if (elementW[check] == true)
             {
                 return true;

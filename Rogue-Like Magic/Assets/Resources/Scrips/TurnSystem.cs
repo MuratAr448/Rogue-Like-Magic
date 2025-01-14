@@ -16,6 +16,7 @@ public class TurnSystem : MonoBehaviour
     TargetMonster targetMonster;
     public GameObject actionMenu;
     public GameObject useButton;
+    CastSlot slot;
     Button endTurnButton;
     Image endTurnImage;
     Text endTurnText;
@@ -23,6 +24,7 @@ public class TurnSystem : MonoBehaviour
 
     private void Start()
     {
+        slot = FindObjectOfType<CastSlot>();
         turns = 0;
         targetMonster = FindObjectOfType<TargetMonster>();
         endTurnButton = GetComponent<Button>();
@@ -33,27 +35,30 @@ public class TurnSystem : MonoBehaviour
     }
     public void SwapTurn()
     {
-        if (playersTurn)
+        if (!slot.inCastSlot)
         {
-            player = FindObjectOfType<Player>();
-            player.manaPoints += player.manaMax;
-            turns++;//turn count
-            Debug.Log(turns);
-            playersTurn = false;
-            StartCoroutine(TurnOn());
-        }
-        else
-        if (!playersTurn)
-        {
-            targetMonster.target =null;
-            actionMenu.SetActive(false);
-            useButton.SetActive(false);
-            endTurnButton.enabled = false;
-            endTurnImage.enabled = false;
-            endTurnText.enabled = false;
-            enemys = 0;
-            StartCoroutine(EnemyAttacks());
-            playersTurn=true;
+            if (playersTurn)
+            {
+                player = FindObjectOfType<Player>();
+                player.manaPoints += player.manaMax;
+                turns++;//turn count
+                Debug.Log(turns);
+                playersTurn = false;
+                StartCoroutine(TurnOn());
+            }
+            else
+            if (!playersTurn)
+            {
+                targetMonster.target = null;
+                actionMenu.SetActive(false);
+                useButton.SetActive(false);
+                endTurnButton.enabled = false;
+                endTurnImage.enabled = false;
+                endTurnText.enabled = false;
+                enemys = 0;
+                StartCoroutine(EnemyAttacks());
+                playersTurn = true;
+            }
         }
     }
     private IEnumerator EnemyAttacks()

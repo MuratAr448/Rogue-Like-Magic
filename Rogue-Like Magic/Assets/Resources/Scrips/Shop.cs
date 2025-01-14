@@ -1,20 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
     Player player;
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject itemH;
-    [SerializeField] private int costIH;
     [SerializeField] private GameObject itemM;
-    [SerializeField] private int costIM;
     [SerializeField] private GameObject itemB;
-    [SerializeField] private int costIB;
-    public void BuyHealthP()
+    [SerializeField] private Text itemTextName;
+    [SerializeField] private Text itemText;
+
+
+    public void CheckBoughtItem()
     {
-        if (CheckMoney(costIH))
+        HealthP healthP = itemH.GetComponent<HealthP>();
+        ManaP manaP = itemM.GetComponent<ManaP>();
+        Bomb bomb = itemB.GetComponent<Bomb>();
+        if (itemTextName.text == healthP.itemName)
+        {
+            BuyHealthP();
+        }
+        else if (itemTextName.text == manaP.itemName)
+        {
+            BuyManaP();
+        } 
+        else if (itemTextName.text == bomb.itemName)
+        {
+            BuyBombs();
+        }
+        itemTextName.text = "----";
+        itemText.text = "-------------";
+    }
+    public void SeediscriptionHealthP()
+    {
+        HealthP item = itemH.GetComponent<HealthP>();
+        itemTextName.text = item.itemName;
+        itemText.text = item.itemDiscription;
+    }
+    public void SeediscriptionManaP()
+    {
+        ManaP item = itemM.GetComponent<ManaP>();
+        itemTextName.text = item.itemName;
+        itemText.text = item.itemDiscription;
+    }
+    public void SeediscriptionBombs()
+    {
+        Bomb item = itemB.GetComponent<Bomb>();
+        itemTextName.text = item.itemName;
+        itemText.text = item.itemDiscription;
+    }
+
+    private void BuyHealthP()
+    {
+        HealthP item = itemH.GetComponent<HealthP>();
+        if (CheckMoney(item.costs))
         {
             int inventorySlotChekker = 1;
             for (int i = 0; i < inventorySlotChekker; i++)
@@ -23,7 +66,7 @@ public class Shop : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     Instantiate(itemH, Vector3.zero, Quaternion.identity, temp.transform);
-                    player.coins -= costIH;
+                    player.coins -= item.costs;
                 }
                 else
                 {
@@ -32,9 +75,10 @@ public class Shop : MonoBehaviour
             }
         }
     }
-    public void BuyManaP() 
+    private void BuyManaP() 
     {
-        if (CheckMoney(costIM))
+        ManaP item = itemM.GetComponent<ManaP>();
+        if (CheckMoney(item.costs))
         {
             int inventorySlotChekker = 1;
             for (int i = 0; i < inventorySlotChekker; i++)
@@ -43,7 +87,7 @@ public class Shop : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     Instantiate(itemM, Vector3.zero, Quaternion.identity, temp.transform);
-                    player.coins -= costIM;
+                    player.coins -= item.costs;
                 }
                 else
                 {
@@ -52,9 +96,10 @@ public class Shop : MonoBehaviour
             }
         }
     }
-    public void BuyBombs() 
+    private void BuyBombs() 
     {
-        if (CheckMoney(costIB))
+        Bomb item = itemB.GetComponent<Bomb>();
+        if (CheckMoney(item.costs))
         {
             int inventorySlotChekker = 1;
             for (int i = 0; i < inventorySlotChekker; i++)
@@ -63,7 +108,7 @@ public class Shop : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     Instantiate(itemB, Vector3.zero, Quaternion.identity, temp.transform);
-                    player.coins -= costIB;
+                    player.coins -= item.costs;
                 }
                 else
                 {
@@ -75,6 +120,7 @@ public class Shop : MonoBehaviour
     private bool CheckMoney(int cost)
     {
         player = FindObjectOfType<Player>();
+
         int inventorySlotChekker = 1;
         bool isInventory = false;
         for (int i = 0; i < inventorySlotChekker; i++)
