@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class DefenseSpell : Spells
 {
-    public int shielding;
+    public int effect;
     public string smallDiscription;
-
-    public virtual void Use()
+    
+    public void Use()
+    {
+        GetInfo();
+    }
+    protected virtual void GetInfo()
     {
 
     }

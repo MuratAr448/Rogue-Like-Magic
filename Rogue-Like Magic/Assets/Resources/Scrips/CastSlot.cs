@@ -74,11 +74,12 @@ public class CastSlot : MonoBehaviour
                 else if (Spells.state == Spells.Status.defense)
                 {
                     DefenseSpell = spellSlot.transform.GetChild(0).GetComponent<DefenseSpell>();
-                    spellDamageText.text = DefenseSpell.smallDiscription + DefenseSpell.shielding;
+                    spellDamageText.text = DefenseSpell.smallDiscription + DefenseSpell.effect;
                     spellManaCostText.text = "Mana Cost: " + Spells.manaCost;
                 }
                 else if (Spells.state == Spells.Status.other)
                 {
+                    OtherSpells = spellSlot.transform.GetChild(0).GetComponent<OtherSpells>();
                     spellDamageText.text = OtherSpells.smallDiscription;
                     spellManaCostText.text = "Mana Cost: " + Spells.manaCost;
                 }
@@ -152,12 +153,31 @@ public class CastSlot : MonoBehaviour
                     player.manaPoints -= Spells.manaCost;
                     Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
                     DefenseSpell.Use();
+
                 }
             }
 
             if (Spells.state == Spells.Status.other)
             {
-
+                if (ManacheckSkeleton())
+                {
+                    player.manaPoints -= Spells.manaCost;
+                    Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
+                    OtherSpells.Use();
+                }
+                int spellSlotChekker = 1;
+                for (int i = 0; i < spellSlotChekker; i++)
+                {
+                    GameObject temp = spellGrid.transform.GetChild(i).gameObject;//after the spell is used the spell go's back in the spell grid in the first slot posible
+                    if (temp.transform.childCount == 0)
+                    {
+                        StartCoroutine(SpellInBook(temp.transform));
+                    }
+                    else
+                    {
+                        spellSlotChekker++;
+                    }
+                }
             }
         }
     }
@@ -165,6 +185,18 @@ public class CastSlot : MonoBehaviour
     {
         int tempMana = Mathf.RoundToInt(player.manaPoints);
         if (tempMana - Spells.manaCost < 0 || Spells.cooldownTimer > TurnSystem.turns) //checks if it is posible to use the spell
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    private bool ManacheckSkeleton()
+    {
+        int tempMana = Mathf.RoundToInt(player.manaPoints);
+        if (tempMana != player.manaMax || Spells.cooldownTimer > TurnSystem.turns || player.skeletonActive) //checks if it is posible to use the spell
         {
             return false;
         }

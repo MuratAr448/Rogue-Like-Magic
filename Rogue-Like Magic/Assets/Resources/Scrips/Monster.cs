@@ -27,7 +27,6 @@ public class Monster : MonoBehaviour
     private float healthDisplay;
     private float transitionSpeed = 10;
 
-    public float defense;
     public int attackD;
     private int critChance = 15;
 
@@ -96,11 +95,27 @@ public class Monster : MonoBehaviour
     }
     public void SecondMove()
     {
+        DoSecondMove();
         secondMoveActive = true;
         secondMoveCooldown = 3 + turnSystem.turns;//second move cooldown
         Debug.Log(secondMoveActive);
     }
+    protected virtual void DoSecondMove()
+    {
 
+    }
+
+    public void TakeDamageSkeleton(int takendamage)
+    {
+        int damage = takendamage;
+        int crit = Random.Range(0, 16);
+        if (crit >= critChance)
+        {
+            damage = Mathf.RoundToInt(damage * 1.5f);
+            Debug.Log(damage);//chance to crit
+        }
+        StartCoroutine(DamageCount(damage));
+    }
     public void TakeDamage(int takendamage)
     {
         int damage;
@@ -117,11 +132,9 @@ public class Monster : MonoBehaviour
     }
     private bool WeaknessCheck()
     {
-        Debug.Log(castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>());
         if (castSlot.spellSlot.transform.GetChild(0).GetComponent<OffenseSpell>() == true)
         {
             int check = (int)castSlot.OffenseSpell.elements;
-            Debug.Log(check);
             if (elementW[check] == true)
             {
                 return true;
@@ -154,15 +167,13 @@ public class Monster : MonoBehaviour
 
         Destroy(temp);
         SpriteRenderer.color = Color.white;
-
-        yield return new WaitForSeconds(delay);
         
         if (healthPoints <= 0)
         {
             player.coins += dropCoins;//loot
             turnSystem.enemyList.Remove(this);//dead
             yield return new WaitForSeconds(delay);
-            Destroy(gameObject);
+            Destroy(gameObject,1f);
         }
     }
     private IEnumerator AttackTime()

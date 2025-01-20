@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     public float coins;
     private float transitionSpeed = 10;
-    private float delay = 1.0f;
+    private float delay = 0.5f;
 
     SpriteRenderer spriteRenderer;
     public GameObject damageText;
@@ -37,7 +37,9 @@ public class Player : MonoBehaviour
     public float ShieldhealthMax;
     public float ShieldhealthPoints;
     private float ShieldhealthDisplay;
+
     public bool shieldOn = false;
+    public bool skeletonActive = false;
 
     private void Start()
     {
@@ -79,6 +81,28 @@ public class Player : MonoBehaviour
         else
         {
             Shield.SetActive(false);
+        }
+        if (skeletonActive)
+        {
+            transform.position = new Vector3(-7,0,0);
+        }
+        else
+        {
+            transform.position = new Vector3(-5, 0, 0);
+        }
+    }
+    public IEnumerator GetShieldHurt(int damageTaken)
+    {
+        ShieldhealthPoints -= damageTaken;
+
+        GameObject temp = Instantiate(damageText, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), Quaternion.identity, textTransform);
+        takedamageText = temp.GetComponentInChildren<Text>();
+        takedamageText.text = "-" + damageTaken;
+        yield return new WaitForSeconds(delay);
+        Destroy(temp);
+        if (ShieldhealthPoints<=0)
+        {
+            shieldOn = false;
         }
     }
     public IEnumerator GetHurt(int damageTaken)

@@ -21,14 +21,15 @@ public class Spells : MonoBehaviour
     TurnSystem TurnSystem;
     public GameObject countdownTimer;
     private Text countdownText;
+    protected Player player;
 
     private void Start()
     {
         TurnSystem = FindObjectOfType<TurnSystem>();
         countdownText = countdownTimer.GetComponentInChildren<Text>();
-
+        player = FindObjectOfType<Player>();
     }
-    private void Update()
+    protected virtual void Update()
     {
         if (cooldownTimer > TurnSystem.turns)
         {

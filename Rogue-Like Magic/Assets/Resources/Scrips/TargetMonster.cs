@@ -16,7 +16,15 @@ public class TargetMonster : MonoBehaviour
         if (target != null)
         {
             targetTransform = target.GetComponentInChildren<RectTransform>();
-            temp = Instantiate(targetImage, target.transform.position, Quaternion.identity, targetTransform);
+            if (temp==null)
+            {
+                temp = Instantiate(targetImage, target.transform.position, Quaternion.identity, targetTransform);
+            }else
+            {
+                temp.transform.SetParent(targetTransform,false);
+                //RectTransform rect = temp.GetComponent<RectTransform>();
+                //temp.transform.position = ;
+            }
         }
     }
     private void Update()

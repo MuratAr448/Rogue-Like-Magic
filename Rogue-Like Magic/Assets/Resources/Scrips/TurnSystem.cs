@@ -17,9 +17,10 @@ public class TurnSystem : MonoBehaviour
     public GameObject actionMenu;
     public GameObject useButton;
     CastSlot slot;
-    Button endTurnButton;
-    Image endTurnImage;
-    Text endTurnText;
+    public GameObject endTurnB;
+    public Button endTurnButton;
+    public Image endTurnImage;
+    public Text endTurnText;
 
 
     private void Start()
@@ -27,9 +28,9 @@ public class TurnSystem : MonoBehaviour
         slot = FindObjectOfType<CastSlot>();
         turns = 0;
         targetMonster = FindObjectOfType<TargetMonster>();
-        endTurnButton = GetComponent<Button>();
-        endTurnImage = GetComponent<Image>();
-        endTurnText = GetComponentInChildren<Text>();
+        endTurnButton = endTurnB.GetComponent<Button>();
+        endTurnImage = endTurnB.GetComponent<Image>();
+        endTurnText = endTurnB.GetComponentInChildren<Text>();
         SwapTurn();
         
     }
@@ -49,15 +50,21 @@ public class TurnSystem : MonoBehaviour
             else
             if (!playersTurn)
             {
-                targetMonster.target = null;
-                actionMenu.SetActive(false);
-                useButton.SetActive(false);
-                endTurnButton.enabled = false;
-                endTurnImage.enabled = false;
-                endTurnText.enabled = false;
-                enemys = 0;
-                StartCoroutine(EnemyAttacks());
-                playersTurn = true;
+                if (player.skeletonActive)
+                {
+                    StartCoroutine(SkeletonAttacks());
+                }else
+                {
+                    targetMonster.target = null;
+                    actionMenu.SetActive(false);
+                    useButton.SetActive(false);
+                    endTurnButton.enabled = false;
+                    endTurnImage.enabled = false;
+                    endTurnText.enabled = false;
+                    enemys = 0;
+                    StartCoroutine(EnemyAttacks());
+                    playersTurn = true;
+                }
             }
         }
     }
@@ -74,12 +81,38 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
-                StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
+                if (player.skeletonActive)
+                {
+                    Skeleton skeleton = FindObjectOfType<Skeleton>();
+                    StartCoroutine(skeleton.GetSkeletonHurt(enemyList[enemys].Attack()));
+                }else
+                if (player.shieldOn)
+                {
+                    StartCoroutine(player.GetShieldHurt(enemyList[enemys].Attack()));
+                }
+                else
+                {
+                    StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
+                }
+                
             }
         } 
         else
         {
-            StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
+            if (player.skeletonActive)
+            {
+                Skeleton skeleton = FindObjectOfType<Skeleton>();
+                StartCoroutine(skeleton.GetSkeletonHurt(enemyList[enemys].Attack()));
+            }
+            else
+            if (player.shieldOn)
+            {
+                StartCoroutine(player.GetShieldHurt(enemyList[enemys].Attack()));
+            }
+            else
+            {
+                StartCoroutine(player.GetHurt(enemyList[enemys].Attack()));
+            }
         }
         
         enemys++;
@@ -89,8 +122,26 @@ public class TurnSystem : MonoBehaviour
         }else
         if (enemys >= enemyList.Count)
         {
+
             SwapTurn();
         }
+    }
+    private IEnumerator SkeletonAttacks()
+    {
+        targetMonster.target = null;
+        actionMenu.SetActive(false);
+        useButton.SetActive(false);
+        endTurnButton.enabled = false;
+        endTurnImage.enabled = false;
+        endTurnText.enabled = false;
+        yield return new WaitForSeconds(delay);
+        Skeleton skeleton = FindObjectOfType<Skeleton>();
+        enemyList[0].GetComponent<Monster>().TakeDamageSkeleton(skeleton.damage);
+        yield return new WaitForSeconds(delay);
+
+        enemys = 0;
+        StartCoroutine(EnemyAttacks());
+        playersTurn = true;
     }
     private IEnumerator TurnOn()
     {

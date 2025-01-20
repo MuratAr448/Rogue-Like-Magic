@@ -2517,6 +2517,12 @@ MonoBehaviour:
   coins: 40
   damageText: {fileID: 607445254897612520, guid: d80c28d651b7bfa4ab3b5c66b1a8d140, type: 3}
   textTransform: {fileID: 398436995}
+  Shield: {fileID: 0}
+  shield: {fileID: 0}
+  ShieldhealthMax: 0
+  ShieldhealthPoints: 0
+  shieldOn: 0
+  skeletonActive: 0
 --- !u!212 &1473650542
 SpriteRenderer:
   m_ObjectHideFlags: 0
