@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -7,16 +9,28 @@ public class RewardSystem : MonoBehaviour
 {
     private int rarity;
     private int chose;
+
+    public List<GameObject> rewardR;
+    public List<GameObject> rewardE;
+
     public List<GameObject> rewardsCommon;
     public List<GameObject> rewardsRare;
     public List<GameObject> rewardsEpic;
     public List<GameObject> showListReward;
+    [SerializeField] private List<GameObject> DestroyRewardList;
     GameManager gameManager;
     [SerializeField] private Canvas canvas;
     private void Start()
     {
         gameManager = GetComponent<GameManager>();
-        StartCoroutine(Chose());
+        for (int i = 0; i<rewardE.Count; i++)
+        {
+            rewardsEpic.Add(rewardE[i]);
+        }
+        for (int i = 0; i <  rewardR.Count; i++)
+        {
+            rewardsRare.Add(rewardR[i]);
+        }
     }
     public IEnumerator Chose()
     {
@@ -45,66 +59,84 @@ public class RewardSystem : MonoBehaviour
             default:
                 break;
         }
-
         for (int i = 0; i < 2; i++)
         {
-            rarity = Random.Range(0, rewardsRare.Count + rewardsEpic.Count);
-            if (rarity < Mathf.RoundToInt((rewardsRare.Count + rewardsEpic.Count) / 3))
+            RewardCheck();
+        }
+        float distX = 0;
+        float distY = Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height)).y * 100; ;
+        for (int i = 0;i < showListReward.Count;i++)
+        {
+            distX += Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0.0f)).x;
+            DestroyRewardList.Add(Instantiate(showListReward[i],new Vector3(distX*55, distY, 0),Quaternion.identity, canvas.transform));
+        }
+    }
+    private void RewardCheck()
+    {
+        rarity = Random.Range(0, rewardsRare.Count + rewardsEpic.Count);
+        if (rarity < Mathf.RoundToInt((rewardsRare.Count + rewardsEpic.Count) / 3))
+        {
+            chose = Random.Range(0, rewardsEpic.Count);
+            if (!showListReward.Contains(rewardsEpic[chose]))
             {
-                chose = Random.Range(0, rewardsEpic.Count);
                 showListReward.Add(rewardsEpic[chose]);
             }
             else
             {
-                chose = Random.Range(0, rewardsRare.Count);
+                RewardCheck();
+            }
+        }
+        else
+        {
+            chose = Random.Range(0, rewardsRare.Count);
+            if (!showListReward.Contains(rewardsRare[chose]))
+            {
                 showListReward.Add(rewardsRare[chose]);
             }
-        }
-        float distX = 0;
-        for (int i = 0;i < showListReward.Count;i++)
-        {
-            distX += Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0.0f)).x;
-            Debug.Log(distX);
-            Instantiate(showListReward[i],new Vector3(distX*33,70,0),Quaternion.identity, canvas.transform);
-        }
-    }
-    public void RemoveIt(GameObject rewardChosen)
-    {
-        bool isRare = false;
-        for (int i = 0; i < rewardsRare.Count; i++)
-        {
-            if (rewardChosen == rewardsRare[i])
+            else
             {
-                rewardsRare.Remove(rewardsRare[chose]);
-                isRare = true;
+                RewardCheck();
             }
         }
-        if (isRare)
+    }
+    public void RemoveIt(bool isRare, GameObject rewardChosen)
+    {
+        if (rewardChosen.GetComponent<StatReward>())
         {
-            for (int i = 0;i < rewardsEpic.Count;i++)
+
+        }
+        else
+        {
+            if (isRare)
             {
-                if (rewardChosen == rewardsEpic[i])
+                for (int i = 0; i < rewardsRare.Count; i++)
                 {
-                    rewardsEpic.Remove(rewardsEpic[chose]);
+                    if (rewardChosen == rewardsRare[i])
+                    {
+                        rewardsRare.Remove(rewardsRare[i]);
+                    }
+                }
+            }
+            else if (!isRare)
+            {
+                for (int i = 0; i < rewardsEpic.Count; i++)
+                {
+                    if (rewardChosen == rewardsEpic[i])
+                    {
+                        rewardsEpic.Remove(rewardsEpic[i]);
+                    }
                 }
             }
         }
+        showListReward.Remove(rewardChosen);
     }
     public void Noshow()
     {
-        int limet = 2;
-        for(int i = 0;i<limet ; i++)
+        for(int i = 0;i < showListReward.Count; i++)
         {
-            ChosenReward reward = showListReward[i].GetComponent<ChosenReward>();
-            if (reward.isRare)
-            {
-                rewardsRare.Add(reward.gameObject);
-            }
-            else if (!reward.isRare)
-            {
-                rewardsEpic.Add(reward.gameObject);
-            }
-            showListReward.Remove(showListReward[i]);
+            Destroy(DestroyRewardList[i]);
         }
+        DestroyRewardList.Clear();
+        showListReward.Clear();
     }
 }

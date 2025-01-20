@@ -9,8 +9,8 @@ public class Monster : MonoBehaviour
     public List<bool> elementW;
 
     CastSlot castSlot;
-    TurnSystem turnSystem;
-    Player player;
+    public TurnSystem turnSystem;
+    public Player player;
 
     public GameObject damageText;
     private Text takedamageText;
@@ -31,6 +31,8 @@ public class Monster : MonoBehaviour
     private int critChance = 15;
 
     TargetMonster TargetMonster;
+    private int attackBoostCooldown;
+    private int defenceBoostCooldown;
 
     private float delay = 1.5f;
     SpriteRenderer SpriteRenderer;
@@ -85,6 +87,11 @@ public class Monster : MonoBehaviour
             secondMoveActive = false;
         }
         int dealdamage = attackD;
+        if (attackBoostCooldown>=turnSystem.turns)
+        {
+            dealdamage = Mathf.RoundToInt(dealdamage * 1.3f);
+        }
+        
         int crit = Random.Range(0, 16);
         if (crit >= critChance)
         {
@@ -95,16 +102,22 @@ public class Monster : MonoBehaviour
     }
     public void SecondMove()
     {
-        DoSecondMove();
         secondMoveActive = true;
         secondMoveCooldown = 3 + turnSystem.turns;//second move cooldown
-        Debug.Log(secondMoveActive);
+        DoSecondMove();
     }
     protected virtual void DoSecondMove()
     {
 
     }
-
+    public void GetAttackBoost()
+    {
+        attackBoostCooldown = turnSystem.turns+3;
+    }
+    public void GetDefenceBoost()
+    {
+        defenceBoostCooldown = turnSystem.turns+3;
+    }
     public void TakeDamageSkeleton(int takendamage)
     {
         int damage = takendamage;
@@ -151,6 +164,10 @@ public class Monster : MonoBehaviour
     }
     private IEnumerator DamageCount(int takendamage)
     {
+        if (defenceBoostCooldown>=turnSystem.turns)
+        {
+            takendamage /= 2;
+        }
         healthPoints -= takendamage;
         if (healthPoints < 0)
         {

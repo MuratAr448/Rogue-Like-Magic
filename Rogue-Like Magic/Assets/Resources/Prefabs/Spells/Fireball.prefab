@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   spellName: Fireball
-  manaCost: 2
+  manaCost: 1
   spellDiscription: Doese damage to one enemy
   cooldownTimer: 0
   cooldownTime: 2

@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721da0d2fe5d2994fa70e8df43650a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRare: 1
   Reward: {fileID: 4380470735877589043, guid: 19022e887d122624da36e5e37fc89e92, type: 3}
   Image: {fileID: 160053719090252242}
   Spellname: {fileID: 2153370571430597703}

@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class OtherSpells : Spells
 {
+    public enum SpellOht
+    {
+        Skeleton,
+        ArrowRain
+    }
+    public SpellOht spellOht;
     public string smallDiscription;
     public void Use()
     {

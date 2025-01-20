@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     Player player;
     TurnSystem TurnSystem;
+    RewardSystem rewardSystem;
 
     public Text coins;
     public float coinsCount;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         TurnSystem = GetComponent<TurnSystem>();
+        rewardSystem = GetComponent<RewardSystem>();
     }
     private void Update()
     {
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
     }
     public void WinBattle()
     {
+        StartCoroutine(rewardSystem.Chose());
         TurnSystem.actionMenu.SetActive(false);
         TurnSystem.useButton.SetActive(false);
         TurnSystem.endTurnB.SetActive(false);

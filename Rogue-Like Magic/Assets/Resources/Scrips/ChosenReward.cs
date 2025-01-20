@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ChosenReward : MonoBehaviour
 {
     public bool isRare;
-    [SerializeField] private GameObject Reward;
+    public GameObject Reward;
     [SerializeField] private GameObject Image;
     [SerializeField] private Text Spellname;
     [SerializeField] private Text SpellDiscription;
@@ -42,7 +42,6 @@ public class ChosenReward : MonoBehaviour
         RewardSystem rewardSystem = FindObjectOfType<RewardSystem>();
         if (Reward.GetComponent<Spells>() != null)
         {
-            
             CastSlot castSlot = FindObjectOfType<CastSlot>();
             int spellSlotChekker = 1;
             for (int i = 0; i < spellSlotChekker; i++)
@@ -51,7 +50,7 @@ public class ChosenReward : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     StartCoroutine(Transver(temp.transform));
-                    rewardSystem.RemoveIt(Reward);
+                    rewardSystem.RemoveIt(isRare, Reward);
                 }
                 else
                 {

@@ -159,12 +159,30 @@ public class CastSlot : MonoBehaviour
 
             if (Spells.state == Spells.Status.other)
             {
-                if (ManacheckSkeleton())
+                switch ((int)OtherSpells.spellOht)
                 {
-                    player.manaPoints -= Spells.manaCost;
-                    Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
-                    OtherSpells.Use();
+                    case 0:
+                        if (ManacheckSkeleton())
+                        {
+                            player.manaPoints -= Spells.manaCost;
+                            Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
+                            OtherSpells.Use();
+                        }
+                        break;
+                    case 1:
+                        if (Manacheck())
+                        {
+                            player.manaPoints -= Spells.manaCost;
+                            Spells.cooldownTimer = Spells.cooldownTime + TurnSystem.turns;
+                            OtherSpells.Use();
+                        }
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
                 }
+
                 int spellSlotChekker = 1;
                 for (int i = 0; i < spellSlotChekker; i++)
                 {
