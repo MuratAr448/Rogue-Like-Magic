@@ -8,19 +8,14 @@ public class TurnSystem : MonoBehaviour
 {
     public List<Monster> enemyList;
     Player player;
-    private bool playersTurn = true;
+    public bool playersTurn = true;
     public int turns = 0;
     private int enemys = 0;
 
     private float delay = 1.0f;
     TargetMonster targetMonster;
     public GameObject actionMenu;
-    public GameObject useButton;
     CastSlot slot;
-    public GameObject endTurnB;
-    public Button endTurnButton;
-    public Image endTurnImage;
-    public Text endTurnText;
 
 
     private void Start()
@@ -28,42 +23,40 @@ public class TurnSystem : MonoBehaviour
         slot = FindObjectOfType<CastSlot>();
         turns = 0;
         targetMonster = FindObjectOfType<TargetMonster>();
-        endTurnButton = endTurnB.GetComponent<Button>();
-        endTurnImage = endTurnB.GetComponent<Image>();
-        endTurnText = endTurnB.GetComponentInChildren<Text>();
         SwapTurn();
         
     }
     public void SwapTurn()
     {
-        if (!slot.inCastSlot)
+        if (enemyList.Count != 0)
         {
-            if (playersTurn)
+            player = FindObjectOfType<Player>();
+            if (!slot.inCastSlot)
             {
-                player = FindObjectOfType<Player>();
-                player.manaPoints += player.manaMax;
-                turns++;//turn count
-                Debug.Log(turns);
-                playersTurn = false;
-                StartCoroutine(TurnOn());
-            }
-            else
-            if (!playersTurn)
-            {
-                if (player.skeletonActive)
+                if (playersTurn)
                 {
-                    StartCoroutine(SkeletonAttacks());
-                }else
+                    
+                    player.manaPoints += player.manaMax;
+                    turns++;//turn count
+                    Debug.Log(turns);
+                    playersTurn = false;
+                    StartCoroutine(TurnOn());
+                }
+                else
+                if (!playersTurn)
                 {
-                    targetMonster.target = null;
-                    actionMenu.SetActive(false);
-                    useButton.SetActive(false);
-                    endTurnButton.enabled = false;
-                    endTurnImage.enabled = false;
-                    endTurnText.enabled = false;
-                    enemys = 0;
-                    StartCoroutine(EnemyAttacks());
-                    playersTurn = true;
+                    if (player.skeletonActive)
+                    {
+                        StartCoroutine(SkeletonAttacks());
+                    }
+                    else
+                    {
+                        targetMonster.target = null;
+                        actionMenu.SetActive(false);
+                        enemys = 0;
+                        StartCoroutine(EnemyAttacks());
+                        playersTurn = true;
+                    }
                 }
             }
         }
@@ -130,10 +123,6 @@ public class TurnSystem : MonoBehaviour
     {
         targetMonster.target = null;
         actionMenu.SetActive(false);
-        useButton.SetActive(false);
-        endTurnButton.enabled = false;
-        endTurnImage.enabled = false;
-        endTurnText.enabled = false;
         yield return new WaitForSeconds(delay);
         Skeleton skeleton = FindObjectOfType<Skeleton>();
         enemyList[0].GetComponent<Monster>().TakeDamageSkeleton(skeleton.damage);
@@ -147,9 +136,5 @@ public class TurnSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         actionMenu.SetActive(true);
-        useButton.SetActive(true);
-        endTurnButton.enabled = true;
-        endTurnImage.enabled = true;
-        endTurnText.enabled = true;
     }
 }

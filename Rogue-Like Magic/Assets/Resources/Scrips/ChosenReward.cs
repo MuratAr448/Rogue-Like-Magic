@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class ChosenReward : MonoBehaviour
 {
     public bool isRare;
     public GameObject Reward;
+    GameManager gameManager;
     [SerializeField] private GameObject Image;
     [SerializeField] private Text Spellname;
     [SerializeField] private Text SpellDiscription;
@@ -15,6 +17,7 @@ public class ChosenReward : MonoBehaviour
     [SerializeField] private Text SpellDamage;
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         Image.GetComponent<Image>().sprite = Reward.GetComponent<Image>().sprite;
         if (Reward.GetComponent<Spells>() != null)
         {
@@ -26,6 +29,11 @@ public class ChosenReward : MonoBehaviour
             {
                 OffenseSpell spell = Reward.GetComponent<OffenseSpell>();
                 SpellDamage.text = "Damage" + spell.damage;
+            }
+            if (Reward.GetComponent<DefenseSpell>() != null)
+            {
+                DefenseSpell spell = Reward.GetComponent<DefenseSpell>();
+                SpellDamage.text = "Damage" + spell.effect;
             }
         }
         else
@@ -49,7 +57,7 @@ public class ChosenReward : MonoBehaviour
                 GameObject temp = castSlot.spellGrid.transform.GetChild(i).gameObject;//after the spell is used the spell go's back in the spell grid in the first slot posible
                 if (temp.transform.childCount == 0)
                 {
-                    StartCoroutine(Transver(temp.transform));
+                    Instantiate(Reward, transform.position, transform.rotation, temp.transform);
                     rewardSystem.RemoveIt(isRare, Reward);
                 }
                 else
@@ -70,10 +78,6 @@ public class ChosenReward : MonoBehaviour
             }
         }
         rewardSystem.Noshow();
-    }
-    private IEnumerator Transver(Transform transform)
-    {
-        yield return new WaitForSeconds(0.1f);
-        Instantiate(Reward, transform.position, transform.rotation,transform);
+        gameManager.SeePath();
     }
 }

@@ -18,7 +18,7 @@ public class Spells : MonoBehaviour
     public string spellDiscription;
     public int cooldownTimer;
     public int cooldownTime;
-    TurnSystem TurnSystem;
+    public TurnSystem TurnSystem;
     public GameObject countdownTimer;
     private Text countdownText;
     protected Player player;

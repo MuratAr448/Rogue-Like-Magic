@@ -14,10 +14,12 @@ public class StatReward : MonoBehaviour
     {
         Player player = FindObjectOfType<Player>();
         player.healthMax += gainMaxstats;
+        player.healthPoints = player.healthMax;
     }
     public void GetMp()
     {
         Player player = FindObjectOfType<Player>();
         player.manaMax += gainMaxstats;
+        player.manaPoints = player.manaMax;
     }
 }

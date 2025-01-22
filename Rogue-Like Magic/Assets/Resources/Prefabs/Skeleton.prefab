@@ -98,9 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b09ceaf7f474946a63eb6b5ffa6a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 4
   health: {fileID: 6109137224874633536}
-  healthMax: 20
+  healthMax: 15
   healthPoints: 0
   damageText: {fileID: 607445254897612520, guid: d80c28d651b7bfa4ab3b5c66b1a8d140, type: 3}
   textTransform: {fileID: 519571799666495997}

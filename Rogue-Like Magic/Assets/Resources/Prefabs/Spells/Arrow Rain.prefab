@@ -167,6 +167,7 @@ MonoBehaviour:
   spellDiscription: hits all enemys
   cooldownTimer: 0
   cooldownTime: 2
+  TurnSystem: {fileID: 0}
   countdownTimer: {fileID: 4189772888411363657}
   spellOht: 1
   smallDiscription: 

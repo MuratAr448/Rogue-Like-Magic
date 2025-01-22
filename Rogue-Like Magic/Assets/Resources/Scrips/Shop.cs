@@ -13,8 +13,24 @@ public class Shop : MonoBehaviour
     [SerializeField] private GameObject itemB;
     [SerializeField] private Text itemTextName;
     [SerializeField] private Text itemText;
-
-
+    [SerializeField] private Text itemTextCostH;
+    [SerializeField] private Text itemTextCostM;
+    [SerializeField] private Text itemTextCostB;
+    private int itemCost;
+    GameManager manager;
+    private void Update()
+    {
+        manager = FindObjectOfType<GameManager>();
+        HealthP healthP = itemH.GetComponent<HealthP>();
+        ManaP manaP = itemM.GetComponent<ManaP>();
+        Bomb bomb = itemB.GetComponent<Bomb>();
+        itemCost = Mathf.RoundToInt(healthP.costs * (manager.turnAmount * 0.1f + 1));
+        itemTextCostH.text = "" + itemCost;
+        itemCost = Mathf.RoundToInt(manaP.costs * (manager.turnAmount * 0.1f + 1));
+        itemTextCostM.text = "" + itemCost;
+        itemCost = Mathf.RoundToInt(bomb.costs * (manager.turnAmount * 0.1f + 1));
+        itemTextCostB.text = "" + itemCost;
+    }
     public void CheckBoughtItem()
     {
         HealthP healthP = itemH.GetComponent<HealthP>();
@@ -38,18 +54,21 @@ public class Shop : MonoBehaviour
     public void SeediscriptionHealthP()
     {
         HealthP item = itemH.GetComponent<HealthP>();
+       
         itemTextName.text = item.itemName;
         itemText.text = item.itemDiscription;
     }
     public void SeediscriptionManaP()
     {
         ManaP item = itemM.GetComponent<ManaP>();
+        itemCost = Mathf.RoundToInt(item.costs * (manager.turnAmount * 0.1f + 1));
         itemTextName.text = item.itemName;
         itemText.text = item.itemDiscription;
     }
     public void SeediscriptionBombs()
     {
         Bomb item = itemB.GetComponent<Bomb>();
+        itemCost = Mathf.RoundToInt(item.costs * (manager.turnAmount * 0.1f + 1));
         itemTextName.text = item.itemName;
         itemText.text = item.itemDiscription;
     }
@@ -57,7 +76,8 @@ public class Shop : MonoBehaviour
     private void BuyHealthP()
     {
         HealthP item = itemH.GetComponent<HealthP>();
-        if (CheckMoney(item.costs))
+        itemCost = Mathf.RoundToInt(item.costs * (manager.turnAmount*0.1f+1));
+        if (CheckMoney(itemCost))
         {
             int inventorySlotChekker = 1;
             for (int i = 0; i < inventorySlotChekker; i++)
@@ -66,7 +86,7 @@ public class Shop : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     Instantiate(itemH, Vector3.zero, Quaternion.identity, temp.transform);
-                    player.coins -= item.costs;
+                    player.coins -= itemCost;
                 }
                 else
                 {
@@ -78,7 +98,8 @@ public class Shop : MonoBehaviour
     private void BuyManaP() 
     {
         ManaP item = itemM.GetComponent<ManaP>();
-        if (CheckMoney(item.costs))
+        itemCost = Mathf.RoundToInt(item.costs * (manager.turnAmount * 0.1f + 1));
+        if (CheckMoney(itemCost))
         {
             int inventorySlotChekker = 1;
             for (int i = 0; i < inventorySlotChekker; i++)
@@ -87,7 +108,7 @@ public class Shop : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     Instantiate(itemM, Vector3.zero, Quaternion.identity, temp.transform);
-                    player.coins -= item.costs;
+                    player.coins -= itemCost;
                 }
                 else
                 {
@@ -99,7 +120,8 @@ public class Shop : MonoBehaviour
     private void BuyBombs() 
     {
         Bomb item = itemB.GetComponent<Bomb>();
-        if (CheckMoney(item.costs))
+        itemCost = Mathf.RoundToInt(item.costs * (manager.turnAmount * 0.1f + 1));
+        if (CheckMoney(itemCost))
         {
             int inventorySlotChekker = 1;
             for (int i = 0; i < inventorySlotChekker; i++)
@@ -108,7 +130,7 @@ public class Shop : MonoBehaviour
                 if (temp.transform.childCount == 0)
                 {
                     Instantiate(itemB, Vector3.zero, Quaternion.identity, temp.transform);
-                    player.coins -= item.costs;
+                    player.coins -= itemCost;
                 }
                 else
                 {

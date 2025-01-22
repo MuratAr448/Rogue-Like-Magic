@@ -7,10 +7,13 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour
 {
     public List<bool> elementW;
+    public bool isSummond;
+    private int timeOfDeath;
 
     CastSlot castSlot;
     public TurnSystem turnSystem;
     public Player player;
+    public GameManager gameManager;
 
     public GameObject damageText;
     private Text takedamageText;
@@ -19,6 +22,7 @@ public class Monster : MonoBehaviour
 
     public int moves;
     public bool secondMoveActive = false;
+    public bool secondMoveAble;
     public int secondMoveCooldown = 0;
 
     [SerializeField] private TMP_Text health;
@@ -31,8 +35,8 @@ public class Monster : MonoBehaviour
     private int critChance = 15;
 
     TargetMonster TargetMonster;
-    private int attackBoostCooldown;
-    private int defenceBoostCooldown;
+    private int attackBoostCooldown = -1;
+    private int defenceBoostCooldown = -1;
 
     private float delay = 1.5f;
     SpriteRenderer SpriteRenderer;
@@ -44,10 +48,13 @@ public class Monster : MonoBehaviour
         turnSystem = FindObjectOfType<TurnSystem>();
         castSlot = FindObjectOfType<CastSlot>();
         player = FindObjectOfType<Player>();
+        gameManager = FindObjectOfType<GameManager>();
         turnSystem.enemyList.Add(this);
         transitionSpeed = healthMax;
         healthPoints = healthMax;
         SpriteRenderer = GetComponent<SpriteRenderer>();
+        timeOfDeath = turnSystem.turns + 3;
+        secondMoveAble = true;
     }
     public void OnMouseOver()
     {
@@ -64,6 +71,14 @@ public class Monster : MonoBehaviour
 
     void Update()
     {
+        if (isSummond)
+        {
+            if (timeOfDeath < turnSystem.turns)
+            {
+                turnSystem.enemyList.Remove(this);
+                Destroy(gameObject,1);
+            }
+        }
         Stats();
     }
 
@@ -89,7 +104,7 @@ public class Monster : MonoBehaviour
         int dealdamage = attackD;
         if (attackBoostCooldown>=turnSystem.turns)
         {
-            dealdamage = Mathf.RoundToInt(dealdamage * 1.3f);
+            dealdamage = Mathf.RoundToInt(dealdamage * 1.5f);
         }
         
         int crit = Random.Range(0, 16);
@@ -102,11 +117,36 @@ public class Monster : MonoBehaviour
     }
     public void SecondMove()
     {
-        secondMoveActive = true;
-        secondMoveCooldown = 3 + turnSystem.turns;//second move cooldown
-        DoSecondMove();
+        DoSecondMoveAble();
+        if (secondMoveAble)
+        {
+            secondMoveActive = true;
+            secondMoveCooldown = 3 + turnSystem.turns;//second move cooldown
+            DoSecondMove();
+        }
+        else
+        {
+            if (player.skeletonActive)
+            {
+                Skeleton skeleton = FindObjectOfType<Skeleton>();
+                StartCoroutine(skeleton.GetSkeletonHurt(Attack()));
+            }
+            else
+            if (player.shieldOn)
+            {
+                StartCoroutine(player.GetShieldHurt(Attack()));
+            }
+            else
+            {
+                StartCoroutine(player.GetHurt(Attack()));
+            }
+        }
     }
     protected virtual void DoSecondMove()
+    {
+
+    }
+    protected virtual void DoSecondMoveAble()
     {
 
     }

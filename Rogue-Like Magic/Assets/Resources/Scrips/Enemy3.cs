@@ -10,6 +10,11 @@ public class Enemy3 : Monster
     }
     private IEnumerator Attacktwice()
     {
+        if (player.skeletonActive)
+        {
+            Skeleton skeleton = FindObjectOfType<Skeleton>();
+            StartCoroutine(skeleton.GetSkeletonHurt(Attack()));
+        }else
         if (player.shieldOn)
         {
             StartCoroutine(player.GetShieldHurt(Attack()));
@@ -19,6 +24,12 @@ public class Enemy3 : Monster
             StartCoroutine(player.GetHurt(Attack()));
         }
         yield return new WaitForSeconds(0.5f);
+        if (player.skeletonActive)
+        {
+            Skeleton skeleton = FindObjectOfType<Skeleton>();
+            StartCoroutine(skeleton.GetSkeletonHurt(Attack()));
+        }
+        else
         if (player.shieldOn)
         {
             StartCoroutine(player.GetShieldHurt(Attack()));

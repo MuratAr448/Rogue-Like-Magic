@@ -37,7 +37,7 @@ public class RewardSystem : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         switch (gameManager.difeculty)
         {
-            case 0:
+            case 1:
                 switch (Random.Range(0, 2))
                 {
                     case 0:
@@ -50,10 +50,10 @@ public class RewardSystem : MonoBehaviour
                         break;
                 }
                 break;
-            case 1:
+            case 2:
                 showListReward.Add(rewardsRare[Random.Range(0,rewardsRare.Count)]);
                 break;
-            case 2:
+            case 3:
                 showListReward.Add(rewardsEpic[Random.Range(0, rewardsEpic.Count)]);
                 break;
             default:

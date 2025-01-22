@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ArrowRain : OtherSpells
 {
-    TurnSystem TurnSystem;
     public int damage;
     protected override void GetInfo()
     {

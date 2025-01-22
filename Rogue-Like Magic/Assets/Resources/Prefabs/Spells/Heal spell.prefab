@@ -186,10 +186,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 1
   spellName: Heal
-  manaCost: 3
+  manaCost: 2
   spellDiscription: Heals the player half of max HP
   cooldownTimer: 0
   cooldownTime: 3
+  TurnSystem: {fileID: 0}
   countdownTimer: {fileID: 8507129434139903645}
   effect: 0
   smallDiscription: 'heals:'
