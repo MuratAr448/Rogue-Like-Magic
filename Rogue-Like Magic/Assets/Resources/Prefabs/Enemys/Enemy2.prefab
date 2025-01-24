@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 464cb0ebdbf38264ca92a3440dc81251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementW: 0000010000
+  elementW: 0000000001
   isSummond: 0
   turnSystem: {fileID: 0}
   player: {fileID: 0}

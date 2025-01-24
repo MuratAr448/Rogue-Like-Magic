@@ -8,9 +8,9 @@ public class OffenseSpell : Spells
     {
         none,
         fire,
-        water,
-        grass,
-        light
+        lightning,
+        psycic,
+        rock
     }
     public Element elements;
     public int damage;

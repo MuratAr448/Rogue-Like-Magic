@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921a05f34e393dd419bab5b25c629628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementW: 0000000000
+  elementW: 0000010000
   isSummond: 0
   turnSystem: {fileID: 0}
   player: {fileID: 0}
@@ -245,7 +245,7 @@ MonoBehaviour:
   secondMoveAble: 0
   secondMoveCooldown: 0
   health: {fileID: 1255262796136716304}
-  healthMax: 100
+  healthMax: 75
   healthPoints: 0
   attackD: 7
   dropCoins: 25

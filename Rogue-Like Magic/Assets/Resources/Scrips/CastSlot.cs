@@ -63,7 +63,7 @@ public class CastSlot : MonoBehaviour
             else
             {//get info of the spell in the cast slot
                 Spells = spellSlot.transform.GetChild(0).GetComponent<Spells>();
-                spellNameText.text = Spells.name;
+                spellNameText.text = Spells.spellName;
                 spellDiscriptionText.text = Spells.spellDiscription;
                 if (Spells.state == Spells.Status.offense)
                 {

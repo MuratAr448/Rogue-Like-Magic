@@ -6,7 +6,7 @@ public class Boss : Monster
 {
     protected override void DoSecondMoveAble()
     {
-        if (gameManager.EnemyplaceFF3.transform.childCount == 0|| gameManager.EnemyplaceFL3.transform.childCount == 0)
+        if (gameManager.EnemyplaceFF3.transform.childCount == 0&& gameManager.EnemyplaceFL3.transform.childCount == 0)
         {
             secondMoveAble = true;
         }else
@@ -19,7 +19,7 @@ public class Boss : Monster
         GameObject summonEnemy = choseSummon();
         Monster  monster = summonEnemy.GetComponent<Monster>();
         monster.isSummond = true;
-        if (monster==gameManager.Enemy3||monster==gameManager.Enemy4)
+        if (summonEnemy == gameManager.Enemy3|| summonEnemy == gameManager.Enemy4)
         {
             Instantiate(summonEnemy, gameManager.EnemyplaceFF3.transform.position, Quaternion.identity, gameManager.EnemyplaceFF3.transform);
         }

@@ -111,29 +111,20 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0;i < MapGrids.Count; i++)
         {
-            if (i == MapGrids.Count+1)
+            if (MapGrids[i] == MapGrids[turnAmount])
             {
-
+                for (int j = 0; j < MapGrids[i].transform.childCount; j++)
+                {
+                    MapGrids[i].transform.GetChild(j).gameObject.GetComponent<Button>().enabled = true;
+                }
             }
             else
             {
-                if (MapGrids[i] ==
-                    MapGrids[turnAmount])
+                for (int j = 0; j < MapGrids[i].transform.childCount; j++)
                 {
-                    for (int j = 0; j < MapGrids[i].transform.childCount; j++)
-                    {
-                        MapGrids[i].transform.GetChild(j).gameObject.GetComponent<Button>().enabled = true;
-                    }
-                }
-                else
-                {
-                    for (int j = 0; j < MapGrids[i].transform.childCount; j++)
-                    {
-                        MapGrids[i].transform.GetChild(j).gameObject.GetComponent<Button>().enabled = false;
-                    }
+                    MapGrids[i].transform.GetChild(j).gameObject.GetComponent<Button>().enabled = false;
                 }
             }
-
         }
         ShowCoins();
         if (TurnSystem.enemyList.Count==0&& !doneBattle)
@@ -152,7 +143,14 @@ public class GameManager : MonoBehaviour
                 }
             }
             doneBattle = true;
-            WinBattle();
+            if (turnAmount == MapGrids.Count)
+            {
+
+            }else
+            {
+                WinBattle();
+            }
+            
         }
         if (doneBattle)
         {
@@ -298,7 +296,9 @@ public class GameManager : MonoBehaviour
     }
     public void ChooseBossBattle()
     {
-        IncreaseTA();
+
+        Map.SetActive(false);   
+        Shop.SetActive(false);
         Instantiate(Enemy5, EnemyplaceFF3.transform.position, Quaternion.identity, EnemyplaceFF3.transform);
         Instantiate(Boss, EnemyplaceF1Or3.transform.position, Quaternion.identity, EnemyplaceF1Or3.transform);
         Instantiate(Enemy5, EnemyplaceFL3.transform.position, Quaternion.identity, EnemyplaceFL3.transform);
