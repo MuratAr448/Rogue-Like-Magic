@@ -39,7 +39,7 @@ public class Monster : MonoBehaviour
     private int defenceBoostCooldown = -1;
 
     private float delay = 1.5f;
-    SpriteRenderer SpriteRenderer;
+    public SpriteRenderer SpriteRenderer;
     public int dropCoins;
     void Start()
     {
@@ -64,7 +64,6 @@ public class Monster : MonoBehaviour
             {
                 TargetMonster.target = gameObject;
                 TargetMonster.SetTarget();//able to be targeted
-                Debug.Log("good");
             }
         }
     }
@@ -110,8 +109,7 @@ public class Monster : MonoBehaviour
         int crit = Random.Range(0, 16);
         if (crit >= critChance)
         {
-            dealdamage = Mathf.RoundToInt(dealdamage * 1.5f);
-            Debug.Log(dealdamage);//chance to crit
+            dealdamage = Mathf.RoundToInt(dealdamage * 1.5f);//chance to crit
         }
         return dealdamage;//deel damage
     }
@@ -144,7 +142,12 @@ public class Monster : MonoBehaviour
     }
     protected virtual void DoSecondMove()
     {
-
+        StartCoroutine(SecondMoveTime());
+    }
+    private IEnumerator SecondMoveTime()
+    {
+        yield return new WaitForSeconds(delay);
+        SpriteRenderer.color = Color.white;
     }
     protected virtual void DoSecondMoveAble()
     {
@@ -164,8 +167,7 @@ public class Monster : MonoBehaviour
         int crit = Random.Range(0, 16);
         if (crit >= critChance)
         {
-            damage = Mathf.RoundToInt(damage * 1.5f);
-            Debug.Log(damage);//chance to crit
+            damage = Mathf.RoundToInt(damage * 1.5f);//chance to crit
         }
         StartCoroutine(DamageCount(damage));
     }
@@ -180,7 +182,6 @@ public class Monster : MonoBehaviour
         {
             damage = takendamage;
         }
-        Debug.Log("My damage:"+ damage);
         StartCoroutine(DamageCount(damage));
     }
     private bool WeaknessCheck()

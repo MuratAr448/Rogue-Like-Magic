@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,7 +32,7 @@ public class ChosenReward : MonoBehaviour
             if (Reward.GetComponent<DefenseSpell>() != null)
             {
                 DefenseSpell spell = Reward.GetComponent<DefenseSpell>();
-                SpellDamage.text = "Damage" + spell.effect;
+                SpellDamage.text = spell.smallDiscription+ " " + spell.effect;
             }
         }
         else

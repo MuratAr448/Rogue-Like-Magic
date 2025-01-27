@@ -28,7 +28,8 @@ public class Boss : Monster
             Instantiate(summonEnemy, gameManager.EnemyplaceFF3.transform.position, Quaternion.identity, gameManager.EnemyplaceFF3.transform);
             Instantiate(summonEnemy, gameManager.EnemyplaceFL3.transform.position, Quaternion.identity, gameManager.EnemyplaceFL3.transform);
         }
-
+        SpriteRenderer.color = Color.yellow;
+        base.DoSecondMove();
     }
     private GameObject choseSummon()
     {

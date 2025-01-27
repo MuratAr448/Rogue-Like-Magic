@@ -8,5 +8,7 @@ public class Enemy5 : Monster
     {
         int chosenEnemy = Random.Range(0, turnSystem.enemyList.Count);
         turnSystem.enemyList[chosenEnemy].GetDefenceBoost();
+        SpriteRenderer.color = Color.yellow;
+        base.DoSecondMove();
     }
 }

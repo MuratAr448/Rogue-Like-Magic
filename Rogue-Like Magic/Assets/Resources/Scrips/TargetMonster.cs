@@ -22,8 +22,6 @@ public class TargetMonster : MonoBehaviour
             }else
             {
                 temp.transform.SetParent(targetTransform,false);
-                //RectTransform rect = temp.GetComponent<RectTransform>();
-                //temp.transform.position = ;
             }
         }
     }

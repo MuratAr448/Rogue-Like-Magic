@@ -6,7 +6,6 @@ public class SummonSkeleton : OtherSpells
 {
     [SerializeField] private GameObject Skeleton;
     [SerializeField] private Transform Transform;
-    Player Player;
     protected override void GetInfo()
     {
         Transform = FindObjectOfType<Player>().transform;

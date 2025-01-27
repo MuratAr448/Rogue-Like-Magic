@@ -38,7 +38,6 @@ public class TurnSystem : MonoBehaviour
                     
                     player.manaPoints += player.manaMax;
                     turns++;//turn count
-                    Debug.Log(turns);
                     playersTurn = false;
                     StartCoroutine(TurnOn());
                 }

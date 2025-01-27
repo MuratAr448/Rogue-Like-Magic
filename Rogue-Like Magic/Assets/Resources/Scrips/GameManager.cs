@@ -37,11 +37,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> MapGrids;
     private List<GameObject> MapList=new List<GameObject>();
     [SerializeField] private GameObject Map;
+    [SerializeField] private GameObject WinScreen;
 
     [SerializeField] private bool doneBattle = true;
     public int difeculty = 0;
     public int turnAmount = 0;
     [SerializeField] private GameObject Shop;
+    private bool bossFight = false;
     private void Start()
     {
         player = FindObjectOfType<Player>();
@@ -143,10 +145,11 @@ public class GameManager : MonoBehaviour
                 }
             }
             doneBattle = true;
-            if (turnAmount == MapGrids.Count)
+            if (bossFight)
             {
-
-            }else
+                YouWin();
+            }
+            else
             {
                 WinBattle();
             }
@@ -185,6 +188,20 @@ public class GameManager : MonoBehaviour
         player.manaPoints = player.manaMax;
         StartCoroutine(rewardSystem.Chose());
         TurnSystem.actionMenu.SetActive(false);
+    }
+    public void YouWin()
+    {
+        Skeleton skeleton = FindObjectOfType<Skeleton>();
+        if (skeleton != null)
+        {
+            Destroy(skeleton.gameObject);
+        }
+        player.shieldOn = false;
+        player.skeletonActive = false;
+        player.healthPoints = player.healthMax;
+        player.manaPoints = player.manaMax;
+        TurnSystem.actionMenu.SetActive(false);
+        WinScreen.SetActive(true);
     }
     public void IncreaseTA()
     {
@@ -269,7 +286,7 @@ public class GameManager : MonoBehaviour
         {
             limet = 4;
         }
-        int rand = Random.Range(2, limet);
+        int rand = Random.Range(1, limet);
         switch (rand)
         {
             case 1:
@@ -296,7 +313,7 @@ public class GameManager : MonoBehaviour
     }
     public void ChooseBossBattle()
     {
-
+        bossFight = true;
         Map.SetActive(false);   
         Shop.SetActive(false);
         Instantiate(Enemy5, EnemyplaceFF3.transform.position, Quaternion.identity, EnemyplaceFF3.transform);

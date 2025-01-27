@@ -24,8 +24,9 @@ public class Enemy1 : Monster
         }
         else
         {
-            turnSystem.enemyList[chosenEnemy].healthPoints += turnSystem.enemyList[chosenEnemy].healthMax / 3;
-
+            turnSystem.enemyList[chosenEnemy].healthPoints += turnSystem.enemyList[chosenEnemy].healthMax / 2.5f;
         }
+        SpriteRenderer.color = Color.yellow;
+        base.DoSecondMove();
     }
 }

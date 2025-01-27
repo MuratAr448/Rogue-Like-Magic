@@ -11,7 +11,6 @@ public class SpellSlot : MonoBehaviour, IDropHandler
         {
             GameObject dropped = eventData.pointerDrag;
             DragAble dragAble = dropped.GetComponent<DragAble>();
-            Debug.Log("happen");
             if (dragAble.DragState == DragAble.Drag.Spell)
             {
                 dragAble.parentAfterDrag = transform;
